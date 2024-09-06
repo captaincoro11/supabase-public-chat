@@ -1,6 +1,6 @@
 // deno-lint-ignore-file
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 // deno-lint-ignore no-node-globals
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;

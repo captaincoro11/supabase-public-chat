@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState } from "react";
 
 export const MyContext = createContext();
 
@@ -8,7 +8,9 @@ export const MyProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
 
   return (
-    <MyContext.Provider value={{ user, setUser, session, setSession,messages,setMessages }}>
+    <MyContext.Provider
+      value={{ user, setUser, session, setSession, messages, setMessages }}
+    >
       {children}
     </MyContext.Provider>
   );
