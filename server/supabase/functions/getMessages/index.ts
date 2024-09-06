@@ -1,7 +1,11 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { corsHeaders } from "../cors.ts";
 
 Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
   try {
     const supabase = createClient(
       Deno.env.get("URL") ?? "",
@@ -13,6 +17,12 @@ Deno.serve(async (req) => {
     if (error) {
       return Response.json({
         message: error,
+      },{ headers:{
+        ...corsHeaders,
+        'Content-Type':'application/json'
+      },
+        status:400,
+       
       });
     }
 
@@ -21,7 +31,11 @@ Deno.serve(async (req) => {
         data
       },
       {
-        status: 200,
+     
+        headers:{
+          ...corsHeaders,
+          'Content-Type':'application/json'
+        },   status: 200,
       },
     );
   } catch (error) {
@@ -30,7 +44,11 @@ Deno.serve(async (req) => {
         message: "Internal Server Error" + error,
       },
       {
-        status: 500,
+      
+        headers:{
+          ...corsHeaders,
+          'Content-Type':'application/json'
+        },status:500
       },
     );
   }

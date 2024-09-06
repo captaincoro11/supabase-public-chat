@@ -1,6 +1,11 @@
 import { supabase } from "../supaBaseClient.ts";
+import { corsHeaders } from "../cors.ts";
 
 Deno.serve(async (req) => {
+    if (req.method === 'OPTIONS') {
+        return new Response('ok', { headers: corsHeaders })
+      }
+    
   try {
     const { user_id, content } = await req.json();
     if (!user_id) {
@@ -9,8 +14,12 @@ Deno.serve(async (req) => {
           message: " User Id is required",
         },
         {
-          status: 403,
-        },
+          
+          headers:{
+            ...corsHeaders,
+            'Content-Type':'application/json'
+          },status: 403
+        }
       );
     }
 
@@ -20,7 +29,12 @@ Deno.serve(async (req) => {
           message: "Content cannot be empty",
         },
         {
-          status: 403,
+        
+          headers:{
+            ...corsHeaders,
+            'Content-Type':'application/json'
+          },
+          status: 403
         },
       );
     }
@@ -35,7 +49,11 @@ Deno.serve(async (req) => {
           message: "Some Server Issue!Please Try again later ",
         },
         {
-          status: 400,
+          headers:{
+            ...corsHeaders,
+            'Content-Type':'application/json'
+          },
+           status: 400,
         },
       );
     }
@@ -43,8 +61,13 @@ Deno.serve(async (req) => {
     return Response.json(
       {
         message: "Message Sent Successfully",
+       
       },
       {
+        headers:{
+            ...corsHeaders,
+            'Content-Type':'application/json'
+          },
         status: 200,
       },
     );
@@ -52,8 +75,13 @@ Deno.serve(async (req) => {
     return Response.json(
       {
         message: error,
+       
       },
       {
+        headers:{
+            ...corsHeaders,
+            'Content-Type':'application/json'
+          },
         status: 500,
       },
     );
